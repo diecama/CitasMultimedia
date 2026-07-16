@@ -1,24 +1,33 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useEffect, useRef } from "react";
+import { Nav } from "@/components/site/Nav";
+import { Hero } from "@/components/site/Hero";
+import { Catalog } from "@/components/site/Catalog";
+import { HoursAndRates } from "@/components/site/HoursAndRates";
+import { BookingForm } from "@/components/site/BookingForm";
+import { LocationSection } from "@/components/site/LocationSection";
+import { Footer } from "@/components/site/Footer";
+import { useGsapScrollReveal } from "@/hooks/use-gsap-reveal";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
 export const Route = createFileRoute("/")({
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
 function Index() {
+  const rootRef = useGsapScrollReveal<HTMLDivElement>();
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
+    <div ref={rootRef} className="bg-background text-foreground min-h-screen">
+      <Nav />
+      <Hero />
+      <Catalog />
+      <HoursAndRates />
+      <BookingForm />
+      <LocationSection />
+      <Footer />
     </div>
   );
 }
+
+// Suppress unused imports in edited file
+void useEffect;
+void useRef;
