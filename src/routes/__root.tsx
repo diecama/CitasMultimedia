@@ -81,10 +81,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "description", content: "Colectivo curado de acompañantes sofisticadas. Discreción absoluta, elegancia y experiencias exclusivas. Solo mayores de 18 años." },
       { name: "author", content: "L'Élite" },
       { property: "og:title", content: "L'Élite — Agencia de acompañantes de lujo" },
-      { property: "og:description", content: "Colectivo curado de acompañantes sofisticadas. Discreción absoluta y elegancia." },
+      { property: "og:description", content: "Colectivo curado de acompañantes sofisticadas. Discreción absoluta, elegancia y experiencias exclusivas. Solo mayores de 18 años." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "L'Élite — Agencia de acompañantes de lujo" },
+      { name: "twitter:description", content: "Colectivo curado de acompañantes sofisticadas. Discreción absoluta, elegancia y experiencias exclusivas. Solo mayores de 18 años." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/cdf826cc-c9b1-496b-b56f-efc4765d517e/id-preview-13955c78--0092a0b9-f893-4042-aa56-936b329496bb.lovable.app-1784227177346.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/cdf826cc-c9b1-496b-b56f-efc4765d517e/id-preview-13955c78--0092a0b9-f893-4042-aa56-936b329496bb.lovable.app-1784227177346.png" },
     ],
     links: [
       {
