@@ -1,5 +1,4 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useRef } from "react";
 import { Nav } from "@/components/site/Nav";
 import { Hero } from "@/components/site/Hero";
 import { Catalog } from "@/components/site/Catalog";
@@ -27,7 +26,3 @@ function Index() {
     </div>
   );
 }
-
-// Suppress unused imports in edited file
-void useEffect;
-void useRef;
