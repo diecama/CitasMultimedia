@@ -1,4 +1,14 @@
-import { Link, useRouterState } from "@tanstack/react-router";
+import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
+import { logout } from "@/lib/admin-auth";
+
+// Helper: fallback logout that works without server
+function handleLogout() {
+  logout();
+  // Clear any lingering cookie
+  if (typeof document !== "undefined") {
+    document.cookie = "elite_session=; Max-Age=0; Path=/; SameSite=Lax";
+  }
+}
 
 const items = [
   { label: "Dashboard", to: "/admin" },
@@ -11,6 +21,7 @@ const items = [
 
 export function AdminSidebar() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const navigate = useNavigate();
   return (
     <aside className="w-64 shrink-0 border-r border-white/5 bg-sidebar min-h-screen sticky top-0 flex flex-col">
       <div className="px-6 py-8 border-b border-white/5">
@@ -50,13 +61,22 @@ export function AdminSidebar() {
           );
         })}
       </nav>
-      <div className="p-4 border-t border-white/5">
+      <div className="p-4 border-t border-white/5 space-y-1">
         <Link
           to="/"
           className="block text-[10px] uppercase tracking-[0.3em] text-white/40 hover:text-gold transition-colors px-3 py-2"
         >
           ← Volver al sitio
         </Link>
+        <button
+          onClick={async () => {
+            await handleLogout();
+            navigate({ to: "/login/admin", replace: true });
+          }}
+          className="block w-full text-left text-[10px] uppercase tracking-[0.3em] text-white/40 hover:text-gold transition-colors px-3 py-2"
+        >
+          Cerrar sesión
+        </button>
       </div>
     </aside>
   );

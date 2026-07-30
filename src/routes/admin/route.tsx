@@ -1,7 +1,24 @@
-import { Outlet, createFileRoute } from "@tanstack/react-router";
+import {
+  Outlet,
+  createFileRoute,
+  useNavigate,
+  redirect,
+} from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 import { AdminSidebar } from "@/components/admin/AdminSidebar";
+import { verifySession, hasStoredToken } from "@/lib/admin-auth";
 
 export const Route = createFileRoute("/admin")({
+  beforeLoad: async ({ location }) => {
+    // Server-side & client-side: check auth before rendering
+    const session = await verifySession();
+    if (!session.authenticated) {
+      throw redirect({
+        to: "/login/admin",
+        replace: true,
+      });
+    }
+  },
   component: AdminLayout,
   head: () => ({
     meta: [
@@ -12,6 +29,28 @@ export const Route = createFileRoute("/admin")({
 });
 
 function AdminLayout() {
+  const navigate = useNavigate();
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    // Double-check on client side (for SPA navigations)
+    if (!hasStoredToken()) {
+      navigate({ to: "/login/admin", replace: true });
+      return;
+    }
+    setReady(true);
+  }, [navigate]);
+
+  if (!ready) {
+    return (
+      <div className="min-h-screen bg-background grid place-items-center">
+        <p className="text-[11px] uppercase tracking-[0.3em] text-white/40">
+          Verificando acceso…
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div className="flex min-h-screen bg-background text-foreground">
       <AdminSidebar />

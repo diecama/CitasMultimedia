@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { location } from "@/data/companions";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { getAllSettings } from "@/server/functions/settings";
 import { lazy, Suspense, useEffect, useState } from "react";
 
 const MapView = lazy(() => import("@/components/site/MapView"));
@@ -9,6 +10,10 @@ export const Route = createFileRoute("/admin/location")({
 });
 
 function LocationAdmin() {
+  const { data: settings } = useSuspenseQuery({
+    queryKey: ["settings"],
+    queryFn: () => getAllSettings(),
+  });
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
 
@@ -22,12 +27,12 @@ function LocationAdmin() {
       </div>
       <div className="grid lg:grid-cols-2 gap-8">
         <div className="space-y-4 border border-white/5 bg-card/40 p-6">
-          <Field label="Dirección" defaultValue={location.address} />
-          <Field label="Teléfono" defaultValue={location.phone} />
-          <Field label="Email" defaultValue={location.email} />
+          <Field label="Dirección" defaultValue={settings["address"] ?? ""} />
+          <Field label="Teléfono" defaultValue={settings["phone"] ?? ""} />
+          <Field label="Email" defaultValue={settings["email"] ?? ""} />
           <div className="grid grid-cols-2 gap-4">
-            <Field label="Latitud" defaultValue={String(location.lat)} />
-            <Field label="Longitud" defaultValue={String(location.lng)} />
+            <Field label="Latitud" defaultValue={settings["lat"] ?? "40.4265"} />
+            <Field label="Longitud" defaultValue={settings["lng"] ?? "-3.6883"} />
           </div>
           <button className="w-full mt-4 bg-gold text-primary-foreground py-3 text-[11px] uppercase tracking-[0.3em] font-semibold hover:bg-gold-soft transition-colors">
             Actualizar ubicación

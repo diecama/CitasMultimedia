@@ -1,11 +1,17 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { rates } from "@/data/companions";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { getRates } from "@/server/functions/settings";
 
 export const Route = createFileRoute("/admin/rates")({
   component: RatesAdmin,
 });
 
 function RatesAdmin() {
+  const { data: ratesData } = useSuspenseQuery({
+    queryKey: ["rates"],
+    queryFn: () => getRates(),
+  });
+
   return (
     <div className="space-y-8 max-w-3xl">
       <div className="flex items-center justify-between">
@@ -20,9 +26,9 @@ function RatesAdmin() {
         </button>
       </div>
       <div className="space-y-3">
-        {rates.map((r) => (
+        {ratesData.map((r) => (
           <div
-            key={r.label}
+            key={r.id}
             className="grid grid-cols-[1fr_1fr_auto_auto] gap-4 items-center border border-white/5 bg-card/40 p-4"
           >
             <input

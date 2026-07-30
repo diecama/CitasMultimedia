@@ -11,6 +11,9 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { Toaster } from "@/components/ui/sonner";
+import { AgeGate } from "@/components/site/AgeGate";
+import { AmbientMusic } from "@/components/site/AmbientMusic";
 
 function NotFoundComponent() {
   return (
@@ -78,17 +81,37 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "L'Élite — Agencia de acompañantes de lujo" },
-      { name: "description", content: "Colectivo curado de acompañantes sofisticadas. Discreción absoluta, elegancia y experiencias exclusivas. Solo mayores de 18 años." },
+      {
+        name: "description",
+        content:
+          "Colectivo curado de acompañantes sofisticadas. Discreción absoluta, elegancia y experiencias exclusivas. Solo mayores de 18 años.",
+      },
       { name: "author", content: "L'Élite" },
       { property: "og:title", content: "L'Élite — Agencia de acompañantes de lujo" },
-      { property: "og:description", content: "Colectivo curado de acompañantes sofisticadas. Discreción absoluta, elegancia y experiencias exclusivas. Solo mayores de 18 años." },
+      {
+        property: "og:description",
+        content:
+          "Colectivo curado de acompañantes sofisticadas. Discreción absoluta, elegancia y experiencias exclusivas. Solo mayores de 18 años.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: "@Lovable" },
       { name: "twitter:title", content: "L'Élite — Agencia de acompañantes de lujo" },
-      { name: "twitter:description", content: "Colectivo curado de acompañantes sofisticadas. Discreción absoluta, elegancia y experiencias exclusivas. Solo mayores de 18 años." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/cdf826cc-c9b1-496b-b56f-efc4765d517e/id-preview-13955c78--0092a0b9-f893-4042-aa56-936b329496bb.lovable.app-1784227177346.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/cdf826cc-c9b1-496b-b56f-efc4765d517e/id-preview-13955c78--0092a0b9-f893-4042-aa56-936b329496bb.lovable.app-1784227177346.png" },
+      {
+        name: "twitter:description",
+        content:
+          "Colectivo curado de acompañantes sofisticadas. Discreción absoluta, elegancia y experiencias exclusivas. Solo mayores de 18 años.",
+      },
+      {
+        property: "og:image",
+        content:
+          "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/cdf826cc-c9b1-496b-b56f-efc4765d517e/id-preview-13955c78--0092a0b9-f893-4042-aa56-936b329496bb.lovable.app-1784227177346.png",
+      },
+      {
+        name: "twitter:image",
+        content:
+          "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/cdf826cc-c9b1-496b-b56f-efc4765d517e/id-preview-13955c78--0092a0b9-f893-4042-aa56-936b329496bb.lovable.app-1784227177346.png",
+      },
     ],
     links: [
       {
@@ -106,6 +129,29 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css",
       },
+      { rel: "canonical", href: "https://lelite.agency" },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "LocalBusiness",
+          name: "L'Élite",
+          description:
+            "Colectivo privado de acompañantes de lujo en Madrid. Discreción absoluta, elegancia y experiencias exclusivas.",
+          email: "reservas@lelite.agency",
+          telephone: "+34 900 000 000",
+          address: {
+            "@type": "PostalAddress",
+            streetAddress: "Calle de Serrano 42",
+            addressLocality: "Madrid",
+            postalCode: "28001",
+            addressCountry: "ES",
+          },
+          url: "https://lelite.agency",
+        }),
+      },
     ],
   }),
   shellComponent: RootShell,
@@ -116,12 +162,15 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="es">
       <head>
         <HeadContent />
       </head>
       <body>
+        <AgeGate />
         {children}
+        <AmbientMusic />
+        <Toaster position="top-center" />
         <Scripts />
       </body>
     </html>

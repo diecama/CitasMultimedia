@@ -35,11 +35,21 @@ export function Hero() {
           alt=""
           width={1920}
           height={1080}
-          className="w-full h-full object-cover"
+          className="ken-burns w-full h-full object-cover"
         />
       </div>
+      {/* Film grain — sits above the photo, below the gradients/text */}
+      <div className="grain-overlay" aria-hidden="true" />
       <div className="absolute inset-0 bg-gradient-to-r from-background via-background/60 to-transparent" />
       <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background/50" />
+      {/* Reinforced vignette for cinematic depth */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: "radial-gradient(ellipse at center, transparent 45%, rgba(0,0,0,0.55) 100%)",
+        }}
+        aria-hidden="true"
+      />
 
       <div className="relative max-w-7xl mx-auto px-6 w-full pt-20">
         <span
@@ -49,15 +59,16 @@ export function Hero() {
           — Agencia privada · Madrid
         </span>
         <h1 className="font-display text-6xl md:text-8xl lg:text-9xl leading-[0.85] tracking-tighter mb-10">
-          <span data-hero-line className="block">Redefiniendo</span>
-          <span data-hero-line className="block text-gold italic">la intimidad.</span>
+          <span data-hero-line className="block">
+            Redefiniendo
+          </span>
+          <span data-hero-line className="block text-gold italic">
+            la intimidad.
+          </span>
         </h1>
-        <p
-          data-hero-body
-          className="max-w-md text-white/60 text-lg leading-relaxed mb-12"
-        >
-          Un colectivo curado de acompañantes sofisticadas para quienes valoran la
-          discreción absoluta y la elegancia en cada detalle.
+        <p data-hero-body className="max-w-md text-white/60 text-lg leading-relaxed mb-12">
+          Un colectivo curado de acompañantes sofisticadas para quienes valoran la discreción
+          absoluta y la elegancia en cada detalle.
         </p>
         <div data-hero-cta className="flex items-center gap-6">
           <a
@@ -69,7 +80,7 @@ export function Hero() {
               →
             </span>
           </a>
-          <span className="text-[10px] uppercase tracking-[0.3em] text-white/40">
+          <span className="scroll-hint text-[10px] uppercase tracking-[0.3em] text-white/40">
             Scroll ↓
           </span>
         </div>

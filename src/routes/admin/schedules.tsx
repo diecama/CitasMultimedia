@@ -1,11 +1,17 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { schedule } from "@/data/companions";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { getSchedules } from "@/server/functions/settings";
 
 export const Route = createFileRoute("/admin/schedules")({
   component: SchedulesAdmin,
 });
 
 function SchedulesAdmin() {
+  const { data: schedulesData } = useSuspenseQuery({
+    queryKey: ["schedules"],
+    queryFn: () => getSchedules(),
+  });
+
   return (
     <div className="space-y-8 max-w-3xl">
       <div>
@@ -15,8 +21,8 @@ function SchedulesAdmin() {
         </p>
       </div>
       <div className="border border-white/5 bg-card/40 divide-y divide-white/5">
-        {schedule.map((s) => (
-          <div key={s.day} className="grid grid-cols-2 gap-4 p-6 items-center">
+        {schedulesData.map((s) => (
+          <div key={s.id} className="grid grid-cols-2 gap-4 p-6 items-center">
             <span className="text-[11px] uppercase tracking-[0.25em] text-white/60">
               {s.day}
             </span>

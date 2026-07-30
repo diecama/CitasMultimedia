@@ -1,18 +1,37 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { companions } from "@/data/companions";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { getCompanions } from "@/server/functions/companions";
 
 export const Route = createFileRoute("/admin/")({
   component: Dashboard,
 });
 
 const stats = [
-  { label: "Perfiles activos", value: "24", trend: "+3 este mes" },
+  { label: "Perfiles activos", key: "active", trend: "+3 este mes" },
   { label: "Visitas hoy", value: "1.240", trend: "+18%" },
-  { label: "Reservas pendientes", value: "8", trend: "3 nuevas" },
+  { label: "Reservas pendientes", key: "pending", trend: "3 nuevas" },
   { label: "Ingresos (mes)", value: "€14.2k", trend: "+22%" },
 ];
 
 function Dashboard() {
+  const { data: companionsData } = useSuspenseQuery({
+    queryKey: ["companions"],
+    queryFn: () => getCompanions(),
+  });
+
+  const activeCompanions = companionsData.filter((c) => c.available).length;
+  const pendingBookings = 3; // Placeholder — will come from getBookings later
+
+  const displayStats = stats.map((s) => ({
+    ...s,
+    value:
+      s.key === "active"
+        ? String(activeCompanions)
+        : s.key === "pending"
+          ? String(pendingBookings)
+          : s.value ?? "—",
+  }));
+
   return (
     <div className="space-y-10">
       <div>
@@ -20,12 +39,13 @@ function Dashboard() {
           Buenas noches, <span className="italic text-gold">Admin</span>.
         </h1>
         <p className="text-white/50 mt-2 text-sm">
-          Resumen del rendimiento de la agencia · {new Date().toLocaleDateString("es-ES", { dateStyle: "full" })}
+          Resumen del rendimiento de la agencia ·{" "}
+          {new Date().toLocaleDateString("es-ES", { dateStyle: "full" })}
         </p>
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        {stats.map((s) => (
+        {displayStats.map((s) => (
           <div
             key={s.label}
             className="border border-white/5 bg-card/40 p-6 hover:border-gold/30 transition-colors"
@@ -44,7 +64,7 @@ function Dashboard() {
           <div className="flex items-center justify-between mb-6">
             <h2 className="font-display text-2xl">Perfiles recientes</h2>
             <span className="text-[10px] uppercase tracking-[0.3em] text-white/40">
-              Últimos 7 días
+              Todos los perfiles
             </span>
           </div>
           <table className="w-full">
@@ -57,15 +77,12 @@ function Dashboard() {
               </tr>
             </thead>
             <tbody className="text-sm">
-              {companions.map((c) => (
+              {companionsData.map((c) => (
                 <tr key={c.id} className="border-b border-white/5">
                   <td className="py-4 flex items-center gap-3">
-                    <img
-                      src={c.image}
-                      alt=""
-                      className="size-9 object-cover rounded-full grayscale"
-                      loading="lazy"
-                    />
+                    <span className="size-9 rounded-full bg-gold/20 border border-gold/30 grid place-items-center text-gold text-xs">
+                      {c.name.charAt(0)}
+                    </span>
                     <span className="text-white/90">{c.name}</span>
                   </td>
                   <td className="py-4">

@@ -9,15 +9,22 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as LegalRouteImport } from './routes/legal'
 import { Route as AdminRouteRouteImport } from './routes/admin/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
+import { Route as LoginAdminRouteImport } from './routes/login/admin'
 import { Route as AdminSchedulesRouteImport } from './routes/admin/schedules'
 import { Route as AdminRatesRouteImport } from './routes/admin/rates'
 import { Route as AdminLocationRouteImport } from './routes/admin/location'
 import { Route as AdminCompanionsRouteImport } from './routes/admin/companions'
 import { Route as AdminBookingsRouteImport } from './routes/admin/bookings'
 
+const LegalRoute = LegalRouteImport.update({
+  id: '/legal',
+  path: '/legal',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminRouteRoute = AdminRouteRouteImport.update({
   id: '/admin',
   path: '/admin',
@@ -32,6 +39,11 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AdminRouteRoute,
+} as any)
+const LoginAdminRoute = LoginAdminRouteImport.update({
+  id: '/login/admin',
+  path: '/login/admin',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AdminSchedulesRoute = AdminSchedulesRouteImport.update({
   id: '/schedules',
@@ -62,31 +74,37 @@ const AdminBookingsRoute = AdminBookingsRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteRouteWithChildren
+  '/legal': typeof LegalRoute
   '/admin/bookings': typeof AdminBookingsRoute
   '/admin/companions': typeof AdminCompanionsRoute
   '/admin/location': typeof AdminLocationRoute
   '/admin/rates': typeof AdminRatesRoute
   '/admin/schedules': typeof AdminSchedulesRoute
+  '/login/admin': typeof LoginAdminRoute
   '/admin/': typeof AdminIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/legal': typeof LegalRoute
   '/admin/bookings': typeof AdminBookingsRoute
   '/admin/companions': typeof AdminCompanionsRoute
   '/admin/location': typeof AdminLocationRoute
   '/admin/rates': typeof AdminRatesRoute
   '/admin/schedules': typeof AdminSchedulesRoute
+  '/login/admin': typeof LoginAdminRoute
   '/admin': typeof AdminIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteRouteWithChildren
+  '/legal': typeof LegalRoute
   '/admin/bookings': typeof AdminBookingsRoute
   '/admin/companions': typeof AdminCompanionsRoute
   '/admin/location': typeof AdminLocationRoute
   '/admin/rates': typeof AdminRatesRoute
   '/admin/schedules': typeof AdminSchedulesRoute
+  '/login/admin': typeof LoginAdminRoute
   '/admin/': typeof AdminIndexRoute
 }
 export interface FileRouteTypes {
@@ -94,40 +112,55 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/admin'
+    | '/legal'
     | '/admin/bookings'
     | '/admin/companions'
     | '/admin/location'
     | '/admin/rates'
     | '/admin/schedules'
+    | '/login/admin'
     | '/admin/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/legal'
     | '/admin/bookings'
     | '/admin/companions'
     | '/admin/location'
     | '/admin/rates'
     | '/admin/schedules'
+    | '/login/admin'
     | '/admin'
   id:
     | '__root__'
     | '/'
     | '/admin'
+    | '/legal'
     | '/admin/bookings'
     | '/admin/companions'
     | '/admin/location'
     | '/admin/rates'
     | '/admin/schedules'
+    | '/login/admin'
     | '/admin/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRouteRoute: typeof AdminRouteRouteWithChildren
+  LegalRoute: typeof LegalRoute
+  LoginAdminRoute: typeof LoginAdminRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/legal': {
+      id: '/legal'
+      path: '/legal'
+      fullPath: '/legal'
+      preLoaderRoute: typeof LegalRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin': {
       id: '/admin'
       path: '/admin'
@@ -148,6 +181,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin/'
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof AdminRouteRoute
+    }
+    '/login/admin': {
+      id: '/login/admin'
+      path: '/login/admin'
+      fullPath: '/login/admin'
+      preLoaderRoute: typeof LoginAdminRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/admin/schedules': {
       id: '/admin/schedules'
@@ -212,6 +252,8 @@ const AdminRouteRouteWithChildren = AdminRouteRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRouteRoute: AdminRouteRouteWithChildren,
+  LegalRoute: LegalRoute,
+  LoginAdminRoute: LoginAdminRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

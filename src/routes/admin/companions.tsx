@@ -1,11 +1,17 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { companions } from "@/data/companions";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { getCompanions } from "@/server/functions/companions";
 
 export const Route = createFileRoute("/admin/companions")({
   component: CompanionsAdmin,
 });
 
 function CompanionsAdmin() {
+  const { data: companionsData } = useSuspenseQuery({
+    queryKey: ["companions"],
+    queryFn: () => getCompanions(),
+  });
+
   return (
     <div className="space-y-8">
       <div className="flex items-center justify-between">
@@ -21,18 +27,15 @@ function CompanionsAdmin() {
       </div>
 
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {companions.map((c) => (
+        {companionsData.map((c) => (
           <article
             key={c.id}
             className="border border-white/5 bg-card/40 overflow-hidden group"
           >
-            <div className="aspect-[4/3] overflow-hidden">
-              <img
-                src={c.image}
-                alt={c.name}
-                loading="lazy"
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-              />
+            <div className="aspect-[4/3] overflow-hidden bg-gold/10 grid place-items-center">
+              <span className="text-6xl font-display italic text-gold/40">
+                {c.name.charAt(0)}
+              </span>
             </div>
             <div className="p-5 space-y-3">
               <div className="flex items-baseline justify-between">

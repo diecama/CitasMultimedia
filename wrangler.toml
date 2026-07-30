@@ -1,0 +1,11 @@
+name = "citasmultimedia"
+main = "./.output/server/index.js"
+compatibility_date = "2026-07-28"
+
+[vars]
+# No D1 binding via env; we use explicit binding below
+
+[[d1_databases]]
+binding = "DB"        # available in env.DB in Workers
+database_name = "citasmultimedia_db"
+database_id = ""      # will be filled after wrangler d1 create
